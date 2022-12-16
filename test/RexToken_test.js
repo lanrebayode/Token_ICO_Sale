@@ -42,7 +42,6 @@ contract('RexToken', function(accounts) {
             assert.equal(receipt.logs[0].args._from, accounts[0], 'Logs the account the token was transferred from');
             assert.equal(receipt.logs[0].args._to, accounts[1], 'Logs the account the token was transferred to');
             assert.equal(receipt.logs[0].args._value, 250000, 'Logs the ammount of token that was transferred');
-
             return tokenInstance.balanceOf(accounts[1]);
         }).then(function(balance) {
             assert.equal(balance, 250000, 'has the right balance');
@@ -52,6 +51,25 @@ contract('RexToken', function(accounts) {
             return tokenInstance.transfer.call(accounts[0], 250000, {from: accounts[1]});
         }).then(function(success) {
             assert.equal(success, true, 'it returns true');
-        })
-    })
-})
+        });
+    });
+
+    it('approves token for delegated tansfer', function() {
+        RexToken.deployed().then(function(instance) {
+            tokenInstance = instance;
+            return tokenInstance.approve.call(accounts[1], 100);
+        }).then(function(success) {
+            assert.equal(success, true, 'it returns true');
+            return tokenInstance.approve(accounts[1], 100, { from: accounts[0]});
+        }).then(function(receipt) {
+            assert.equal(receipt.logs.length, 1, 'triggers only one event');
+            assert.equal(receipt.logs[0].event, 'Approval', 'event should be Approve');
+            assert.equal(receipt.logs[0].args._owner, accounts[0], 'Logs the account the authorization came  from');
+            assert.equal(receipt.logs[0].args._spender, accounts[1], 'Logs the account the token was authorized to');
+            assert.equal(receipt.logs[0].args._value, 100, 'Logs the ammount of token that was transferred');
+            return tokenInstance.allowance(accounts[0], accounts[1]);
+        }).then(function(allowance) {
+            assert.equal(allowance.toNumber(), 1000, 'stores the allowance for delegated transfer');
+        });
+    });
+});
