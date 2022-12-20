@@ -12,6 +12,7 @@ contract RexToken {
         address indexed _spender,
         uint256 _value
     );
+
     //constructor
     //set the total number od tokens
     //read total number of tokens
@@ -38,8 +39,28 @@ contract RexToken {
         public
         returns (bool success)
     {
-        allowance[msg.sender][_spender] = 100;
+        allowance[msg.sender][_spender] = _amount;
         emit Approval(msg.sender, _spender, _amount);
+        return true;
+    }
+
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _value
+    ) public returns (bool success) {
+        require(
+            _value <= balanceOf[_from],
+            "Address does not have enough token"
+        );
+        require(
+            _value <= allowance[_from][msg.sender],
+            "This address does not have the approval to spend this token"
+        );
+        balanceOf[_from] -= _value;
+        balanceOf[_to] += _value;
+        allowance[_from][msg.sender] -= _value;
+        emit Transfer(_from, _to, _value);
         return true;
     }
 }
