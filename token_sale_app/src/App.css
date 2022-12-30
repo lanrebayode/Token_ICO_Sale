@@ -1,0 +1,52 @@
+.App{
+  text-align: center;
+  font-size: 130%;
+  color: blue;
+}
+
+.line{
+  width: 50%;
+  opacity: 0.3;
+  margin-top: -1%;
+}
+
+.intro{
+  color: black;
+  margin-top: 7%;
+  font-size: 80%;
+}
+
+.input{
+  width: 40%;
+  height:40px;
+  border-radius: 6px;
+}
+
+.button{
+  height: 45px;
+  width: 10%;
+  margin-left: 0px;
+  background-color: #008CBA; /* Blue */
+  font-size: 12px;
+  border: 0px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.parent{
+  align-content: center;
+  background-color: rgb(223, 220, 220);
+  width: 50%;
+  margin: auto;
+}
+
+.wallet{
+  position: relative;
+  margin-left: 80%;
+  border: 0px;
+  font-size: 100%;
+  padding:2%;
+  border-radius: 7px;
+  background-color: blue;
+  color: white;
+}
